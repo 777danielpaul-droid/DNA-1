@@ -1,0 +1,293 @@
+/* --- Vollbild Container & Grundsetup --- */
+.circuit-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9998; /* über EndSplash (999) und Canvas (0), unter Header-Buttons (9999) */
+  font-family: 'Courier New', Courier, monospace;
+  opacity: 0;
+  transition: opacity 1.4s ease-out;
+}
+
+.circuit-container.visible {
+  opacity: 1;
+}
+
+.circuit-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  transition: opacity 0.2s ease-out;
+  filter: drop-shadow(0 0 5px rgba(var(--accent-rgb), 0.7));
+}
+
+/* pulsierender Leuchteffekt */
+@keyframes pulseGlow {
+  0% { opacity: 0.3; filter: drop-shadow(0 0 2px rgba(var(--accent-rgb), 0.4)); }
+  50% { opacity: 0.9; filter: drop-shadow(0 0 12px rgba(var(--accent-rgb), 1)); }
+  100% { opacity: 0.3; filter: drop-shadow(0 0 2px rgba(var(--accent-rgb), 0.4)); }
+}
+
+.pulsing-group {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+.pcb-track {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.pcb-track-sub {
+  fill: none;
+  stroke: var(--accent-light);
+  stroke-width: 1.2;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  opacity: 0.7;
+}
+
+.pcb-pad {
+  fill: var(--accent);
+}
+
+.pcb-chip {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+
+/* INJECT SOUL — bewusst dezenter als die Haupt-Tracks (dünner, blasser,
+   kein starker Glow), damit die Mitte nicht überladen wirkt */
+.pcb-track-soul {
+  fill: none;
+  stroke: var(--accent-light);
+  stroke-width: 1;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  opacity: 0.4;
+}
+
+.pcb-pad-soul {
+  fill: var(--accent-light);
+  opacity: 0.5;
+}
+
+.pcb-vignette-soul {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  opacity: 0.25;
+}
+
+/* === Menüpunkte === */
+.menu-nodes-container {
+  position: absolute;
+  inset: 0;
+}
+
+.menu-node {
+  position: absolute;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform: translate(-50%, -50%);
+}
+
+.node-dot {
+  width: 14px;
+  height: 14px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent), 0 0 25px var(--accent);
+  transition: all 0.3s ease;
+  border: 2px solid #fff;
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.node-label {
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px var(--accent);
+  opacity: 0.75;
+  transition: all 0.3s ease;
+  background: rgba(10, 4, 18, 0.6);
+  backdrop-filter: blur(6px);
+  padding: 5px 10px;
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* Hexagon-Punkte auf der linken Bildschirmhälfte: Label links vom Dot,
+   damit nichts über den Viewport-Rand hinausragt */
+.menu-node.hex-left {
+  flex-direction: row-reverse;
+}
+
+.menu-node:hover .node-dot {
+  transform: scale(1.6);
+  background-color: #00ffff;
+  box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+  border-color: #fff;
+}
+
+.menu-node:hover .node-label {
+  opacity: 1;
+  color: #00ffff;
+  border-color: rgba(0, 255, 255, 0.8);
+  text-shadow: 0 0 12px #00ffff;
+  transform: translateX(4px);
+}
+
+.menu-node.hex-left:hover .node-label {
+  transform: translateX(-4px);
+}
+
+/* INJECT SOUL — Label über dem Dot, nicht daneben, für zentrale Symmetrie */
+.menu-node[data-soul="true"] {
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 10px;
+  transform: translate(-50%, -50%);
+}
+
+.menu-node[data-soul="true"] .node-label {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  transform: none;
+}
+
+.menu-node[data-soul="true"] .node-dot {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+/* ========== MOBILE ========== */
+@media (max-width: 768px) {
+  /* SVG proportional skalieren — kein Distort mehr */
+  .circuit-svg {
+    width: 100%;
+    height: 100%;
+    max-width: 100vw;
+    height: auto;
+  }
+
+  /* Burger-Toggle für die Menüpunkte — oben rechts, damit er nie mit dem
+     Chatfenster am unteren Bildschirmrand kollidiert */
+  .circuit-mobile-toggle {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 9990;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: rgba(10, 4, 18, 0.6);
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .circuit-mobile-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--accent-light);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .circuit-mobile-toggle.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .circuit-mobile-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .circuit-mobile-toggle.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Menüpunkte: vertikale Liste am unteren Bildschirmrand — standardmäßig
+     versteckt, erscheint erst über den Burger-Toggle oben rechts */
+  .menu-nodes-container.mobile {
+    position: fixed;
+    bottom: env(safe-area-inset-bottom, 16px);
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(16px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .menu-nodes-container.mobile.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .menu-node {
+    position: static;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    min-width: 44px;
+    min-height: 44px;
+    background: linear-gradient(180deg, rgba(6, 2, 14, 0.6) 0%, rgba(0, 2, 6, 0.65) 100%);
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    border-radius: 6px;
+    backdrop-filter: blur(16px) saturate(1.3);
+  }
+
+  .node-label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+
+  .menu-node:hover .node-label {
+    transform: none;
+  }
+
+  /* INJECT SOUL braucht die zentrierende Desktop-Sonderregel
+     (transform: translate(-50%,-50%) + column-reverse) hier NICHT —
+     die hat wegen des Attribut-Selektors höhere Spezifität als die
+     normale ".menu-node"-Mobile-Regel oben und würde sie sonst
+     überschreiben, wodurch der Punkt versetzt in der Liste sitzt. */
+  .menu-node[data-soul="true"] {
+    transform: none;
+    flex-direction: column;
+    gap: 6px;
+  }
+}

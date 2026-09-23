@@ -1,0 +1,263 @@
+.soul-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50vw;
+  height: 100vh;
+  z-index: 10050; /* über Circuit-Menü (9998) und Chat-Panel (9998) */
+  background: transparent;
+  backdrop-filter: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  animation: soulFadeIn 0.25s ease-out;
+}
+
+@media (max-width: 980px) {
+  .soul-overlay {
+    width: 100vw;
+    background: rgba(4, 2, 10, 0.6);
+    backdrop-filter: blur(3px);
+  }
+}
+
+@keyframes soulFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.soul-card {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  height: 100%;
+  overflow-y: auto;
+  background: linear-gradient(180deg, rgba(6, 2, 14, 0.6) 0%, rgba(0, 2, 6, 0.65) 100%);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  border-right: none;
+  border-radius: 0;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(var(--accent-rgb), 0.1);
+  padding: 28px 24px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--accent-pale);
+}
+
+@media (max-width: 980px) {
+  .soul-card {
+    border-right: 1px solid rgba(var(--accent-rgb), 0.3);
+    background: linear-gradient(180deg, rgba(6, 2, 14, 0.6) 0%, rgba(0, 2, 6, 0.65) 100%);
+  }
+}
+
+/* dezente symmetrische Vignette in den Ecken — bewusst leiser als die
+   Haupt-Circuit-Optik (kein Glow, geringe Deckkraft) */
+.soul-vignette {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.soul-vignette path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-linecap: square;
+}
+
+.soul-vignette circle {
+  fill: var(--accent);
+}
+
+.soul-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.soul-close:hover {
+  color: #fff;
+}
+
+.soul-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: var(--accent-pale-2);
+  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
+}
+
+.soul-title-icon {
+  color: var(--accent);
+  margin-right: 6px;
+}
+
+.soul-subtitle {
+  margin: 0 0 18px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+}
+
+.soul-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--accent-light);
+  margin: 14px 0 6px;
+}
+
+.soul-input,
+.soul-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(var(--accent-rgb), 0.06);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  border-radius: 4px;
+  color: var(--accent-pale-2);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.soul-input:focus,
+.soul-textarea:focus {
+  border-color: rgba(var(--accent-rgb), 0.7);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+.soul-textarea {
+  resize: vertical;
+  line-height: 1.5;
+  min-height: 120px;
+}
+
+.soul-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.soul-btn {
+  flex: 1;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  padding: 9px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.soul-btn-reset {
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #94a3b8;
+}
+
+.soul-btn-reset:hover {
+  border-color: rgba(148, 163, 184, 0.6);
+  color: #cbd5e1;
+}
+
+.soul-btn-save {
+  background: rgba(var(--accent-rgb), 0.18);
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
+  color: var(--accent-pale-2);
+}
+
+.soul-btn-save:hover {
+  background: rgba(var(--accent-rgb), 0.3);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.35);
+}
+
+.soul-hint {
+  margin: 14px 0 0;
+  font-size: 9.5px;
+  line-height: 1.5;
+  color: var(--accent);
+  letter-spacing: 0.2px;
+}
+
+body.light-theme .soul-card {
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.6) 0%, rgba(241, 245, 249, 0.65) 100%);
+  border-color: rgba(37, 99, 235, 0.3);
+  color: #1e293b;
+}
+
+body.light-theme .soul-vignette path {
+  stroke: var(--accent);
+}
+
+body.light-theme .soul-vignette circle {
+  fill: var(--accent);
+}
+
+body.light-theme .soul-title {
+  color: #1d4ed8;
+  text-shadow: none;
+}
+
+body.light-theme .soul-title-icon {
+  color: var(--accent);
+}
+
+body.light-theme .soul-subtitle,
+body.light-theme .soul-hint {
+  color: var(--accent);
+}
+
+body.light-theme .soul-label {
+  color: var(--accent);
+}
+
+body.light-theme .soul-input,
+body.light-theme .soul-textarea {
+  background: rgba(37, 99, 235, 0.04);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #0f172a;
+}
+
+body.light-theme .soul-btn-save {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.4);
+  color: #1d4ed8;
+}
+
+
+/* Einheitliche Fullscreen-Menü-Chrome */
+.soul-menu-header { flex: 0 0 auto; }
+.soul-menu-body { min-width: 0; overflow-x: hidden; }
+.soul-close { z-index: 20 !important; position: relative; }
+.soul-title-secondary { margin-top: 0; }
+.soul-section-title {
+  color: var(--accent-light); font-size: 10px; letter-spacing: 2px; margin: 22px 0 8px;
+}
+.soul-question-input-row { display: flex; gap: 8px; width: 100%; max-width: 900px; }
+.soul-question-input-row .soul-input { flex: 1; min-width: 0; }
+.soul-question-add { flex: 0 0 auto; }
+.soul-question-list { display: grid; gap: 8px; width: 100%; max-width: 1100px; margin-top: 10px; }
+.soul-question-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid rgba(var(--accent-rgb), .18); background: rgba(var(--accent-rgb), .035); border-radius: 6px; min-width: 0; }
+.soul-question-item > span { min-width: 0; overflow-wrap: anywhere; }
+.soul-question-actions { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.soul-question-ask, .soul-question-remove { background: transparent; border: 1px solid rgba(var(--accent-rgb), .3); color: var(--accent-light); border-radius: 4px; padding: 4px 8px; cursor: pointer; font: inherit; font-size: 10px; }
+.soul-question-remove { border: 0; font-size: 16px; }
+.soul-question-ask:hover { background: rgba(var(--accent-rgb), .12); }
+.soul-question-remove:hover { color: #f87171; }
+@media (max-width: 700px) { .soul-question-input-row { flex-direction: column; } .soul-question-add { width: 100%; } .soul-question-item { align-items: flex-start; flex-direction: column; } }

@@ -1,0 +1,659 @@
+/* ModelWindow.css — styling for the ModelWindow component.
+   Mirrors the GeminiChat aesthetic: dark glassmorphism, monospace labels,
+   violet accent borders (var(--bar-color)). */
+
+.model-window-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50vw;
+  height: 100vh;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  isolation: isolate;
+  contain: paint;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.model-window-panel {
+  position: relative;
+  background: linear-gradient(180deg, rgba(6, 2, 14, 0.6) 0%, rgba(0, 2, 6, 0.65) 100%);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  border-right: none;
+  border-radius: 0;
+  box-shadow:
+    -20px 0 40px rgba(0, 0, 0, 0.45),
+    0 0 20px rgba(var(--accent-rgb), 0.25),
+    inset 0 0 40px rgba(var(--accent-rgb), 0.06);
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+}
+
+/* Unter ~980px reicht der Platz nicht für Menü + Chat nebeneinander —
+   dann bekommt das Menü wieder den ganzen Bildschirm. */
+@media (max-width: 980px) {
+  .model-window-overlay {
+    width: 100vw;
+    background: rgba(7, 9, 17, 0.55);
+    backdrop-filter: blur(3px);
+  }
+
+  .model-window-panel {
+    border-right: 1px solid rgba(var(--accent-rgb), 0.4);
+    box-shadow:
+      0 0 20px rgba(var(--accent-rgb), 0.25),
+      inset 0 0 40px rgba(var(--accent-rgb), 0.06);
+  }
+
+  body.light-theme .model-window-overlay {
+    background: #eef2f7;
+  }
+}
+
+.model-window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(var(--accent-rgb), 0.08);
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.18);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--accent-light);
+  text-transform: uppercase;
+}
+
+.model-window-close {
+  background: transparent;
+  border: none;
+  color: var(--accent-light);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.model-window-close:hover {
+  opacity: 1;
+  color: #fff;
+}
+
+.model-window-body {
+  padding: 18px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Inject section */
+.model-inject-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.model-inject-label {
+  font-size: 0.7rem;
+  color: var(--accent-light);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.model-inject-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.model-inject-provider-select {
+  flex: 0 0 140px;
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border-radius: 6px;
+  color: var(--accent-light);
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.75rem;
+  padding: 6px 8px;
+  outline: none;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.model-inject-provider-select option {
+  background: #0f0f17;
+  color: #fff;
+}
+
+.model-inject-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  border-radius: 6px;
+  color: #e0e0ff;
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.78rem;
+  padding: 7px 10px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.model-inject-input:focus {
+  border-color: var(--accent-light);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.25);
+}
+
+.model-inject-btn {
+  align-self: flex-start;
+  background: rgba(var(--accent-rgb), 0.15);
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
+  border-radius: 6px;
+  color: var(--accent-light);
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.72rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.model-inject-btn:hover:not(:disabled) {
+  background: rgba(var(--accent-rgb), 0.28);
+  border-color: var(--accent-light);
+}
+
+.model-inject-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.model-inject-error {
+  color: #f87171;
+  font-size: 0.7rem;
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+}
+
+.model-inject-hint {
+  color: #f59e0b;
+  font-size: 0.68rem;
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  margin: 0;
+}
+
+/* Divider */
+.model-window-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.4), transparent);
+  width: 100%;
+  margin: 4px 0;
+}
+
+/* Provider grid */
+.model-provider-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.model-provider-tile {
+  background: rgba(15, 17, 23, 0.75);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.model-provider-tile.configured {
+  border-color: rgba(var(--accent-rgb), 0.45);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.1);
+}
+
+.model-provider-tile.unconfigured {
+  opacity: 0.75;
+}
+
+.model-provider-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.model-provider-name {
+  font-size: 0.72rem;
+  color: var(--accent-light);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.model-provider-status {
+  font-size: 0.85rem;
+  color: #4ade80;
+}
+
+.model-provider-status.missing {
+  color: #f87171;
+}
+
+/* Credential input */
+.model-provider-credential {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.model-credential-label {
+  font-size: 0.62rem;
+  color: #a0a0c0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.model-credential-input {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  border-radius: 5px;
+  color: #e0e0ff;
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.72rem;
+  padding: 5px 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.model-credential-input:focus {
+  border-color: var(--accent-light);
+}
+
+.model-credential-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Model selection */
+.model-provider-model {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.model-select,
+.model-input {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  border-radius: 5px;
+  color: #e0e0ff;
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.72rem;
+  padding: 5px 8px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.model-select:focus,
+.model-input:focus {
+  border-color: var(--accent-light);
+}
+
+.model-select:disabled,
+.model-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.model-select option {
+  background: #0f0f17;
+  color: #fff;
+}
+
+/* Custom model input (companion to the preset select) */
+.model-custom-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px dashed rgba(var(--accent-rgb), 0.2);
+  border-radius: 5px;
+  color: #a0a0c0;
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.68rem;
+  padding: 4px 8px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 4px;
+}
+
+.model-custom-input:focus {
+  border-color: var(--accent-light);
+  border-style: solid;
+  color: #e0e0ff;
+}
+
+.model-save-btn {
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border-radius: 6px;
+  color: var(--accent-light);
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.65rem;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.model-save-btn:hover:not(:disabled) {
+  background: rgba(var(--accent-rgb), 0.25);
+  border-color: var(--accent-light);
+}
+
+.model-save-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.model-window-footer {
+  padding: 8px 18px;
+  background: rgba(var(--accent-rgb), 0.06);
+  border-top: 1px solid rgba(var(--accent-rgb), 0.15);
+  font-size: 0.62rem;
+  color: #888;
+  text-align: center;
+}
+
+/* NETWORK / Remote Access */
+.network-remote-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.network-section-title {
+  font-size: 0.68rem;
+  color: var(--accent-light);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.network-remote-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
+}
+
+.network-remote-card {
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid rgba(var(--accent-rgb), 0.22);
+  border-radius: 7px;
+  background: rgba(15, 17, 23, 0.72);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.network-remote-card-title {
+  color: var(--accent-light);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+}
+
+.network-remote-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #f59e0b;
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+}
+
+.network-remote-status.online { color: #4ade80; }
+
+.network-status-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.network-remote-help {
+  color: #9ca3af;
+  font-size: 0.62rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+/* Social Media — umgezogen aus dem Chat-Header hierher */
+.network-social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.network-social-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(var(--accent-rgb), 0.28);
+  border-radius: 6px;
+  background: rgba(var(--accent-rgb), 0.06);
+  color: var(--accent-light);
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.network-social-link:hover {
+  transform: translateY(-1px);
+  background: rgba(var(--accent-rgb), 0.2);
+  border-color: rgba(var(--accent-rgb), 0.75);
+  color: #fff;
+}
+
+.network-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  flex: 0 0 18px;
+  font-weight: 700;
+}
+
+.network-social-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .network-remote-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Light-Mode ===
+   Bisher komplett dunkel (#070911 / #0c0e16), unabhängig vom Dark/Light-
+   Umschalter — betrifft alle Fenster, die dieses Chrome nutzen
+   (System Status, Diagnostics, Media, Network, Invoice Scanner). */
+body.light-theme .model-window-overlay {
+  background: transparent;
+}
+
+body.light-theme .model-window-panel {
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.6) 0%, rgba(241, 245, 249, 0.65) 100%);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border-color: rgba(37, 99, 235, 0.3);
+  color: #1e293b;
+  box-shadow:
+    0 0 20px rgba(37, 99, 235, 0.12),
+    inset 0 0 40px rgba(37, 99, 235, 0.03);
+}
+
+body.light-theme .model-window-header {
+  background: rgba(37, 99, 235, 0.06);
+  border-bottom-color: rgba(37, 99, 235, 0.2);
+  color: #1d4ed8;
+}
+
+body.light-theme .model-window-close {
+  color: #1d4ed8;
+}
+
+body.light-theme .model-window-close:hover {
+  color: #0f172a;
+}
+
+body.light-theme .model-window-footer {
+  background: rgba(37, 99, 235, 0.05);
+  border-top-color: rgba(37, 99, 235, 0.15);
+  color: #64748a;
+}
+
+body.light-theme .model-inject-label,
+body.light-theme .network-section-title {
+  color: #1d4ed8;
+}
+
+body.light-theme .model-inject-provider-select,
+body.light-theme .model-select,
+body.light-theme .model-input,
+body.light-theme .model-credential-input {
+  background: rgba(37, 99, 235, 0.05);
+  border-color: rgba(37, 99, 235, 0.3);
+  color: #0f172a;
+}
+
+body.light-theme .model-inject-input {
+  background: rgba(15, 23, 42, 0.03);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #0f172a;
+}
+
+body.light-theme .model-inject-provider-select option,
+body.light-theme .model-select option {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+body.light-theme .model-inject-btn,
+body.light-theme .model-save-btn,
+body.light-theme .system-status-refresh-btn {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.4);
+  color: #1d4ed8;
+}
+
+body.light-theme .model-inject-btn:hover:not(:disabled),
+body.light-theme .model-save-btn:hover:not(:disabled),
+body.light-theme .system-status-refresh-btn:hover {
+  background: rgba(37, 99, 235, 0.2);
+  border-color: #1d4ed8;
+}
+
+body.light-theme .model-credential-label,
+body.light-theme .model-provider-name {
+  color: #1d4ed8;
+}
+
+body.light-theme .model-provider-tile {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+body.light-theme .network-remote-card {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+body.light-theme .network-remote-help {
+  color: #64748a;
+}
+
+body.light-theme .network-social-link {
+  background: rgba(37, 99, 235, 0.06);
+  border-color: rgba(37, 99, 235, 0.28);
+  color: #1d4ed8;
+}
+
+body.light-theme .network-social-link:hover {
+  background: rgba(37, 99, 235, 0.16);
+  border-color: rgba(37, 99, 235, 0.5);
+  color: #0f172a;
+}
+
+
+/* NETWORK · Messaging token integration */
+.network-remote-section .system-status-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.network-remote-section .system-status-section-title {
+  display: none;
+}
+
+.network-remote-section .invoice-scanner-hint {
+  color: #9ca3af;
+  font-size: 0.66rem;
+  line-height: 1.45;
+}
+
+.network-remote-section .system-status-social-card {
+  min-width: 0;
+  border: 1px solid rgba(var(--accent-rgb), 0.22);
+  border-radius: 7px;
+  padding: 14px;
+  background: rgba(15, 17, 23, 0.72);
+}
+
+.network-remote-section .system-status-social-title {
+  color: var(--accent-light);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.network-remote-section .invoice-scanner-input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+.network-remote-section .system-status-row {
+  margin: 8px 0;
+}

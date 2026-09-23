@@ -1,0 +1,25 @@
+/* PanelCircuitGlow.css — dezente, aber auffällig leuchtende Circuit-Deko
+   für Untermenü-Panels. Positioniert sich hinter dem eigentlichen Inhalt
+   (Panel-Elternklasse braucht `position: relative`, Inhalt kommt danach
+   im DOM und liegt dadurch automatisch obenauf). */
+
+.panel-circuit-glow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.55;
+  filter: drop-shadow(0 0 6px rgba(var(--accent-rgb), 0.75))
+          drop-shadow(0 0 16px rgba(var(--accent-rgb), 0.35));
+}
+
+@media (max-width: 768px) {
+  .panel-circuit-glow {
+    opacity: 0.4;
+  }
+}
+
+body.light-theme .panel-circuit-glow {
+  opacity: 0.35;
+}

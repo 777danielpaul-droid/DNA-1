@@ -1,0 +1,186 @@
+/* InvoiceScanner.css — nutzt die model-window-* Chrome-Klassen aus
+   ModelWindow.css für Overlay/Panel/Header, ergänzt nur die Formular- und
+   Tabellen-Elemente der Buchhaltungsfunktion. */
+
+.invoice-scanner-panel {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+}
+
+.invoice-scanner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.invoice-scanner-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.invoice-scanner-label {
+  font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a0a0c0;
+}
+
+.invoice-scanner-input,
+.invoice-scanner-select {
+  background: rgba(var(--accent-rgb), 0.06);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  border-radius: 6px;
+  color: var(--text-color, #fff);
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  width: 100%;
+}
+
+.invoice-scanner-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.invoice-scanner-btn {
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border-radius: 6px;
+  color: var(--accent-light);
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.invoice-scanner-btn:hover:not(:disabled) {
+  background: rgba(var(--accent-rgb), 0.22);
+}
+
+.invoice-scanner-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.invoice-scanner-btn.primary {
+  background: rgba(var(--accent-rgb), 0.3);
+}
+
+.invoice-scanner-link {
+  color: var(--accent-light);
+  font-size: 0.78rem;
+  text-decoration: underline;
+}
+
+.invoice-scanner-status {
+  font-size: 0.8rem;
+  color: #a0a0c0;
+}
+
+.invoice-scanner-error {
+  font-size: 0.8rem;
+  color: #ff6b6b;
+}
+
+.invoice-scanner-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  border-radius: 6px;
+}
+
+.invoice-scanner-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.invoice-scanner-table th,
+.invoice-scanner-table td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.12);
+  white-space: nowrap;
+}
+
+.invoice-scanner-table th {
+  color: #a0a0c0;
+  font-weight: 500;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.invoice-scanner-subject {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.invoice-scanner-hint {
+  font-size: 0.72rem;
+  color: #7a7a9a;
+  line-height: 1.4;
+}
+
+/* === Light-Mode === */
+body.light-theme .invoice-scanner-label,
+body.light-theme .invoice-scanner-table th {
+  color: #64748a;
+}
+
+body.light-theme .invoice-scanner-input,
+body.light-theme .invoice-scanner-select {
+  background: rgba(15, 23, 42, 0.03);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #0f172a;
+}
+
+body.light-theme .invoice-scanner-btn {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.4);
+  color: #1d4ed8;
+}
+
+body.light-theme .invoice-scanner-btn:hover:not(:disabled) {
+  background: rgba(37, 99, 235, 0.2);
+}
+
+body.light-theme .invoice-scanner-btn.primary {
+  background: rgba(37, 99, 235, 0.3);
+  color: #fff;
+}
+
+body.light-theme .invoice-scanner-link {
+  color: #1d4ed8;
+}
+
+body.light-theme .invoice-scanner-status {
+  color: #64748a;
+}
+
+body.light-theme .invoice-scanner-error {
+  color: #dc2626;
+}
+
+body.light-theme .invoice-scanner-table-wrap {
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+body.light-theme .invoice-scanner-table th,
+body.light-theme .invoice-scanner-table td {
+  border-bottom-color: rgba(37, 99, 235, 0.12);
+}
+
+body.light-theme .invoice-scanner-hint {
+  color: #64748a;
+}

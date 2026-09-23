@@ -1,0 +1,107 @@
+.remote-input-page {
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+  background: radial-gradient(ellipse at top, rgba(10, 4, 20, 0.98) 0%, rgba(0, 0, 0, 1) 70%);
+  color: #f0f0f5;
+  font-family: 'Courier New', Courier, monospace;
+  box-sizing: border-box;
+}
+
+.remote-input-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.remote-input-title {
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+}
+
+.remote-input-room {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  letter-spacing: 0.15em;
+}
+
+.remote-input-textarea {
+  flex: 1;
+  min-height: 30vh;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--accent-rgb, 120, 80, 255), 0.4);
+  border-radius: 12px;
+  padding: 14px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: none;
+}
+
+.remote-input-textarea:focus {
+  outline: none;
+  border-color: rgba(var(--accent-rgb, 120, 80, 255), 0.9);
+}
+
+.remote-input-actions {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.remote-input-mic {
+  flex: 0 0 auto;
+  width: 56px;
+  font-size: 1.4rem;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--accent-rgb, 120, 80, 255), 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.remote-input-mic.listening {
+  background: rgba(255, 60, 60, 0.25);
+  border-color: rgba(255, 60, 60, 0.7);
+  animation: remote-input-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes remote-input-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.remote-input-send {
+  flex: 1;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--accent-rgb, 120, 80, 255), 0.7);
+  background: rgba(var(--accent-rgb, 120, 80, 255), 0.25);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.remote-input-send:disabled {
+  opacity: 0.4;
+}
+
+.remote-input-error {
+  color: #ff8080;
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 0;
+}
+
+.remote-input-hint {
+  font-size: 0.8rem;
+  opacity: 0.55;
+  text-align: center;
+  margin: 0 0 12px;
+}

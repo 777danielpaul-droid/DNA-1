@@ -1,0 +1,466 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* === Akzentfarben-Themes ===
+   Alle Rahmen/Glow/Label-Farben im UI (Circuit-Menü, Chat, Model-Fenster,
+   Soul-Karten, Burger-Panel) referenzieren ausschließlich diese Variablen.
+   Umschalten passiert über data-accent-theme auf <html> (siehe useUiTheme.ts). */
+:root {
+    --accent-rgb: 168, 85, 247;
+    --accent: #a855f7;
+    --accent-light: #c084fc;
+    --accent-pale: #e9d5ff;
+    --accent-pale-2: #f3e8ff;
+    /* Hintergrundbild-Farbregler (useBackgroundFilter) — Default: aus. */
+    --bg-filter: none;
+    --bg-duotone-opacity: 0;
+}
+
+html[data-accent-theme="cyan"] {
+    --accent-rgb: 34, 211, 238;
+    --accent: #22d3ee;
+    --accent-light: #67e8f9;
+    --accent-pale: #cffafe;
+    --accent-pale-2: #ecfeff;
+}
+
+html[data-accent-theme="crimson"] {
+    --accent-rgb: 244, 63, 94;
+    --accent: #f43f5e;
+    --accent-light: #fb7185;
+    --accent-pale: #ffe4e6;
+    --accent-pale-2: #fff1f2;
+}
+
+html[data-accent-theme="emerald"] {
+    --accent-rgb: 52, 211, 153;
+    --accent: #34d399;
+    --accent-light: #6ee7b7;
+    --accent-pale: #d1fae5;
+    --accent-pale-2: #ecfdf5;
+}
+
+html[data-accent-theme="amber"] {
+    --accent-rgb: 245, 158, 11;
+    --accent: #f59e0b;
+    --accent-light: #fbbf24;
+    --accent-pale: #fef3c7;
+    --accent-pale-2: #fffbeb;
+}
+
+/* Ghost White — helles, chromartiges Monochrom-Theme. Glow/Rahmen sind
+   nahezu weiß, dadurch besonders hell und "clean" statt neonfarben. */
+html[data-accent-theme="white"] {
+    --accent-rgb: 248, 250, 252;
+    --accent: #f8fafc;
+    --accent-light: #ffffff;
+    --accent-pale: #ffffff;
+    --accent-pale-2: #ffffff;
+}
+
+/* Obsidian Black — dunkles Graphit-Monochrom-Theme. Bewusst kein reines
+   #000, sonst wäre der Glow auf dunklem Hintergrund unsichtbar; Text
+   (accent-pale/-2) bleibt trotzdem hell und lesbar. */
+html[data-accent-theme="black"] {
+    --accent-rgb: 82, 82, 91;
+    --accent: #52525b;
+    --accent-light: #a1a1aa;
+    --accent-pale: #d4d4d8;
+    --accent-pale-2: #f4f4f5;
+}
+
+/* === Native Formularelemente & Scrollbars ===
+   `color-scheme` weist den Browser an, native Bedienelemente (Scrollbars,
+   <select>-Dropdown-Popups, Checkboxen, Datepicker, Autofill) direkt in
+   Dark- bzw. Light-Chrome zu rendern, statt im Browser-Standard-Weiß.
+   Zusätzlich themen wir Scrollbars explizit mit der Akzentfarbe, weil
+   `color-scheme` allein (v. a. in Firefox) keine Akzentfarbe liefert. */
+:root {
+    color-scheme: dark;
+}
+
+body.light-theme {
+    color-scheme: light;
+}
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--accent-rgb), 0.55) rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme {
+    scrollbar-color: rgba(var(--accent-rgb), 0.55) rgba(15, 23, 42, 0.12);
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(var(--accent-rgb), 0.5);
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--accent-rgb), 0.75);
+    background-clip: padding-box;
+}
+
+body.light-theme *::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.08);
+}
+
+/* Baseline für alle Formularelemente, die keine eigene, spezifischere
+   Klasse haben — verhindert weiße Standard-Inputs/Dropdowns/Popups.
+   Elemente mit eigener Klasse (z. B. .model-credential-input) haben
+   höhere Selektor-Spezifität und überschreiben das hier automatisch. */
+input,
+select,
+textarea {
+    background-color: transparent;
+    color: inherit;
+    font-family: inherit;
+    accent-color: var(--accent);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(160, 160, 192, 0.55);
+}
+
+body.light-theme input::placeholder,
+body.light-theme textarea::placeholder {
+    color: rgba(15, 23, 42, 0.4);
+}
+
+select option,
+select optgroup {
+    background-color: #0f0f17;
+    color: #e0e0ff;
+}
+
+body.light-theme select option,
+body.light-theme select optgroup {
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"] {
+    accent-color: var(--accent);
+}
+
+input[type="file"] {
+    color: inherit;
+}
+
+html, body, #root {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background: var(--bg-color, #ffffff);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-color, #0f172a);
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Light Mode — globale Farben für body/UI + Canvas-Invertierung */
+body.light-theme {
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+/* --- Canvas Theme Handling ---
+   The Three.js scene is now theme-aware (DnaScene.tsx) and renders correct
+   colors directly — no CSS filter-invert hack needed.
+   Variables are set via JS in BurgerMenu.tsx. */
+#canvas-container canvas {
+    filter: var(--canvas-filter, none);
+    opacity: var(--canvas-opacity, 1);
+    transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+/* Info-Node Farben für Light Mode */
+body.light-theme .info-node-label {
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.92) 0%, rgba(241, 245, 249, 0.96) 100%);
+    border-color: hsla(210, 100%, 50%, 0.3);
+}
+
+body.light-theme .info-node-label span { color: hsl(300, 100%, 50%); }
+body.light-theme .info-node-label h3 { color: #0f172a; }
+body.light-theme .info-node-label p { color: var(--accent); }
+body.light-theme .info-node-dot { background-color: hsl(300, 100%, 50%); box-shadow: 0 0 10px hsl(300, 100%, 50%), 0 0 20px hsl(300, 100%, 50%); }
+
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;  /* Canvas hinter Header-Elementen */
+    background: transparent;
+}
+
+.scroll-spacer {
+    height: 1600vh;
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* --- Info-Node: einzelnes, wanderndes Circuit-Menü-Element ---
+   Ersetzt die früheren 6 Info-Boxen durch EIN Element, das je nach
+   Scroll-Sequenz links/rechts einblendet, seinen Inhalt austauscht und
+   im Stil eines Circuit-Menü-Punkts (Dot + Trace + Label) auftritt. */
+.info-node {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.info-node.info-left { left: 6%; }
+.info-node.info-right { right: 6%; }
+
+.info-node.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.info-node-inner {
+    position: relative;
+    width: 380px;
+    height: 260px;
+    max-width: 90vw;
+    animation: nodeFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes nodeFadeIn {
+    from { opacity: 0; transform: scale(0.94); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* --- PCB-Muster statt Card: kein Hintergrund, kein Rahmen — der Platz,
+   den früher die Karte eingenommen hat, füllt jetzt echtes Circuit-Art
+   (dieselben pcb-track/pcb-pad/pcb-chip-Klassen wie CircuitOverlay.css),
+   mit demselben pulseGlow-Flackern. Zwei Layer: gedimmte Basis (immer
+   sichtbar) + heller Layer, der per radial-gradient-Maske nur lokal um
+   den Cursor sichtbar wird — reines GPU-Compositing, kein Neuzeichnen. */
+.info-node-circuit {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.info-node-circuit-base .pcb-track,
+.info-node-circuit-base .pcb-track-sub {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: traceDrawIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards, pulseGlow 3s infinite ease-in-out;
+    animation-delay: 0s, 0.8s;
+    vector-effect: non-scaling-stroke;
+}
+
+.info-node-circuit-base .pcb-pad {
+    opacity: 0;
+    animation: padFadeIn 0.4s ease forwards;
+}
+
+.info-node-circuit-base .pcb-chip {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: traceDrawIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    vector-effect: non-scaling-stroke;
+}
+
+@keyframes traceDrawIn {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes padFadeIn {
+    to { opacity: 1; }
+}
+
+.info-node-circuit-highlight {
+    opacity: 0;
+    filter: drop-shadow(0 0 6px rgba(0, 255, 255, 0.9));
+    -webkit-mask-image: radial-gradient(70px circle at var(--mx, 50%) var(--my, 50%), #fff 0%, transparent 70%);
+    mask-image: radial-gradient(70px circle at var(--mx, 50%) var(--my, 50%), #fff 0%, transparent 70%);
+    transition: opacity 0.25s ease;
+}
+
+.info-node-circuit-highlight .pcb-track-hl { stroke: #00ffff; }
+.info-node-circuit-highlight .pcb-track-sub-hl { stroke: #67e8f9; }
+.info-node-circuit-highlight .pcb-pad-hl { fill: #00ffff; }
+.info-node-circuit-highlight .pcb-chip-hl { stroke: #00ffff; opacity: 1; }
+
+.info-node-inner:hover .info-node-circuit-highlight {
+    opacity: 1;
+}
+
+/* Text schwebt direkt auf dem Muster — kein Kasten, nur Text-Shadow
+   für Lesbarkeit gegen die animierten Linien im Hintergrund. */
+.info-node-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 68%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.info-node-text span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.9);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.info-node-text h3 {
+    margin: 0 0 10px 0;
+    color: #f8fafc;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.info-node-text p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #cbd5e1;
+    line-height: 1.6;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+body.light-theme .info-node-circuit-base .pcb-track,
+body.light-theme .info-node-circuit-base .pcb-track-sub { stroke: var(--accent); }
+body.light-theme .info-node-circuit-base .pcb-pad { fill: var(--accent); }
+body.light-theme .info-node-circuit-base .pcb-chip { stroke: var(--accent); }
+body.light-theme .info-node-text span { color: #1d4ed8; text-shadow: 0 0 10px rgba(29, 78, 216, 0.6); }
+body.light-theme .info-node-text h3 { color: #0f172a; text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8); }
+body.light-theme .info-node-text p { color: var(--accent); text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8); }
+
+@media (max-width: 768px) {
+    /* Mobile: kein Hover möglich — Highlight-Layer weglassen, spart Kosten.
+       Muster bleibt als statisches Hintergrund-Motiv sichtbar. */
+    .info-node.info-left,
+    .info-node.info-right {
+        left: 50%;
+        right: auto;
+        top: auto;
+        bottom: 14vh;
+        transform: translateX(-50%);
+    }
+
+    .info-node-circuit-highlight {
+        display: none;
+    }
+
+    .info-node-inner {
+        width: 90vw;
+        height: 200px;
+    }
+
+    .info-node-text h3 { font-size: 1.05rem; }
+    .info-node-text p { font-size: 0.82rem; }
+    .info-node-text span { font-size: 0.62rem; }
+}
+
+@media (max-width: 480px) {
+    .info-node-inner {
+        width: 92vw;
+        height: 180px;
+    }
+    .info-node.info-left,
+    .info-node.info-right {
+        bottom: 11vh;
+    }
+}
+
+
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-10px);}
+    60% {transform: translateY(-5px);}
+}
+
+
+/* Spotify interface */
+.spotify-panel { display: flex; flex-direction: column; gap: 10px; }
+.spotify-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.spotify-subtitle, .spotify-help { font-size: 11px; opacity: .62; line-height: 1.45; }
+.spotify-help code { word-break: break-all; }
+.spotify-label, .spotify-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+.spotify-connect { width: 100%; }
+.spotify-account { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.spotify-account img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+.spotify-online { margin-left: auto; font-size: 9px; letter-spacing: .1em; opacity: .7; }
+.spotify-now-playing { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 9px; padding: 8px; border: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+.spotify-now-playing img, .spotify-track img, .spotify-playlists img { width: 42px; height: 42px; object-fit: cover; }
+.spotify-now-playing div:nth-child(2), .spotify-track-meta { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.spotify-now-playing strong, .spotify-track strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.spotify-now-playing span, .spotify-track span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; opacity: .62; }
+.spotify-controls { display: flex; gap: 4px; }
+.spotify-controls button, .spotify-track button { min-width: 28px; height: 28px; border: 1px solid color-mix(in srgb, currentColor 20%, transparent); background: transparent; color: inherit; cursor: pointer; }
+.spotify-search-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; }
+.spotify-search-row input, .spotify-panel input { box-sizing: border-box; width: 100%; padding: 8px 9px; border: 1px solid color-mix(in srgb, currentColor 18%, transparent); background: transparent; color: inherit; }
+.spotify-search-row button { padding: 8px 11px; border: 1px solid color-mix(in srgb, currentColor 20%, transparent); background: transparent; color: inherit; cursor: pointer; }
+.spotify-results { display: flex; flex-direction: column; gap: 4px; max-height: 220px; overflow: auto; }
+.spotify-track { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 8px; padding: 4px; }
+.spotify-track:hover { background: color-mix(in srgb, currentColor 7%, transparent); }
+.spotify-playlists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.spotify-playlists button { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 5px; border: 1px solid color-mix(in srgb, currentColor 12%, transparent); background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.spotify-playlists button span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.spotify-error { font-size: 11px; color: #e66; }
+
+.youtube-panel { display: flex; flex-direction: column; gap: 10px; }
+.youtube-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.youtube-subtitle, .youtube-help { font-size: 11px; opacity: .62; line-height: 1.45; }
+.youtube-help a { color: inherit; }
+.youtube-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+.youtube-search-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; }
+.youtube-search-row input, .youtube-panel input { box-sizing: border-box; width: 100%; padding: 8px 9px; border: 1px solid color-mix(in srgb, currentColor 18%, transparent); background: transparent; color: inherit; }
+.youtube-search-row button { padding: 8px 11px; border: 1px solid color-mix(in srgb, currentColor 20%, transparent); background: transparent; color: inherit; cursor: pointer; }
+.youtube-now-playing { display: flex; flex-direction: column; gap: 8px; padding: 8px; border: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+.youtube-player-wrap { position: relative; width: 100%; padding-top: 56.25%; }
+.youtube-player-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.youtube-now-playing-meta { display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.youtube-now-playing-meta span { font-size: 10px; opacity: .62; }
+.youtube-now-playing-meta button { align-self: flex-start; margin-top: 4px; padding: 6px 10px; border: 1px solid color-mix(in srgb, currentColor 20%, transparent); background: transparent; color: inherit; cursor: pointer; }
+.youtube-results { display: flex; flex-direction: column; gap: 4px; max-height: 260px; overflow: auto; }
+.youtube-video { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: 8px; padding: 4px; }
+.youtube-video:hover { background: color-mix(in srgb, currentColor 7%, transparent); }
+.youtube-video img { width: 64px; height: 36px; object-fit: cover; }
+.youtube-video-meta { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.youtube-video-meta strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.youtube-video-meta span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; opacity: .62; }
+.youtube-video button { min-width: 28px; height: 28px; border: 1px solid color-mix(in srgb, currentColor 20%, transparent); background: transparent; color: inherit; cursor: pointer; }
+.youtube-error { font-size: 11px; color: #e66; }
+
+
+/* Kein horizontales Scrollen durch Fullscreen-Menüs oder breite Inhalte. */
+*, *::before, *::after { box-sizing: border-box; }
+img, video, canvas, svg { max-width: 100%; }
